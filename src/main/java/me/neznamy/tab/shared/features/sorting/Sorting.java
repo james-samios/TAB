@@ -17,6 +17,7 @@ import me.neznamy.tab.shared.features.sorting.types.PlaceholderHighToLow;
 import me.neznamy.tab.shared.features.sorting.types.PlaceholderLowToHigh;
 import me.neznamy.tab.shared.features.sorting.types.PlaceholderZtoA;
 import me.neznamy.tab.shared.features.sorting.types.SortingType;
+import org.bukkit.Bukkit;
 
 /**
  * Class for handling player sorting rules
@@ -115,10 +116,16 @@ public class Sorting {
 		if (teamName.length() > 12) {
 			teamName = teamName.substring(0, 12);
 		}
-		teamName += p.getName();
+		teamName += p.getName().hashCode();
+		if (teamName.length() > 13) { // Changed from 15
+			teamName = teamName.substring(0, 13); // Changed from 15
+		}
+		// The following line of code will prevent the BungeeCord duplicate team name error.
+		teamName += new StringBuilder(Bukkit.getServer().getPort()).reverse().toString();
 		if (teamName.length() > 15) {
 			teamName = teamName.substring(0, 15);
 		}
+
 		return checkTeamName(p, teamName, 65);
 	}
 	
